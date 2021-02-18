@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import Form from "./components/Form";
+import ToDoList from "./components/ToDoList";
+import { saveLocalToDos } from "./localStorage";
 
-function App() {
+function App({ toDosInit }) {
+  const [statusList, setStatusList] = useState("allItems");
+
+  useEffect(() => {
+    saveLocalToDos(toDosInit);
+  }, [toDosInit]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> James's ToDo List</h1>
+      <Form setStatus={setStatusList} />
+      <ToDoList status={statusList} />
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = ({ toDosInit }) => ({ toDosInit });
+
+export default connect(mapStateToProps, null)(App);
